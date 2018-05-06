@@ -1,3 +1,4 @@
+MAINTAINER Capt Horsley
 # use this empty Dockerfile to build your assignment
 
 # This dir contains a Node.js app, you need to get it running in a container
@@ -16,15 +17,26 @@
 
 # Instructions from the app developer
 # - you should use the 'node' official image, with the alpine 6.x branch
+FROM alpine:3.6
 # - this app listens on port 3000, but the container should launch on port 80
+EXPOSE 3000/tcp
   #  so it will respond to http://localhost:80 on your computer
+  ### Will use -p 80:3000
+  
 # - then it should use alpine package manager to install tini: 'apk add --update tini'
+RUN apk add --update tini
 # - then it should create directory /usr/src/app for app files with 'mkdir -p /usr/src/app'
+RUN mkdir -p /usr/src/app
+#WORKDIR /usr/src/app
 # - Node uses a "package manager", so it needs to copy in package.json file
+RUN apk add --update nodejs
 # - then it needs to run 'npm install' to install dependencies from that file
+RUN npm install -y
 # - to keep it clean and small, run 'npm cache clean --force' after above
+RUN npm cache clean --force
 # - then it needs to copy in all files from current directory
 # - then it needs to start container with command '/sbin/tini -- node ./bin/www'
+CMD /sbin/tini -- node ./bin/www
 # - in the end you should be using FROM, RUN, WORKDIR, COPY, EXPOSE, and CMD commands
 
 # Bonus Extra Credit
