@@ -27,7 +27,9 @@ EXPOSE 3000/tcp
 RUN apk add --update tini
 # - then it should create directory /usr/src/app for app files with 'mkdir -p /usr/src/app'
 RUN mkdir -p /usr/src/app
-#WORKDIR /usr/src/app
+COPY ./* /usr/src/app
+WORKDIR /usr/src/app
+
 # - Node uses a "package manager", so it needs to copy in package.json file
 RUN apk add --update nodejs
 # - then it needs to run 'npm install' to install dependencies from that file
